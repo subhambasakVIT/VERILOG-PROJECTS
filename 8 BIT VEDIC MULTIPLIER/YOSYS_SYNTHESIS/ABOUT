@@ -1,0 +1,31 @@
+1. First image (vedic_8x8.png)
+
+This is the pure hierarchical implementation of the 8×8 Vedic multiplier.
+
+Structure:
+
+Inputs a[7:0] and b[7:0] are split into two 4-bit halves (7:4 and 3:0).
+
+Four vedic_4x4 blocks (z1, z2, z3, z4) compute partial products.
+
+Multiple adders (add_8_bit, add_12_bit) combine partial products.
+
+Temporary buses (temp1, temp2, temp3, temp4) are created to align partial products before summation.
+
+Finally, results are concatenated/added to produce the 16-bit output c[15:0].
+
+Key point: This schematic is clean, modular, and directly matches the textbook hierarchical Vedic method.
+
+2. Second image (top_synth.png)
+
+This is the synthesized version of the top-level design.
+
+Structure looks very similar, but with extra constants (8'00000000) inserted.
+
+Instead of “neat wiring,” the synthesizer inserts explicit zero-padding for alignment. For example:
+
+When a 4-bit product needs to be shifted left by 8 bits, the tool connects it to 8'00000000 + the product → forming a full 12/16-bit bus.
+
+Adders (z5, z6, z7) are still there, but all bus widths are made explicit.
+
+The tool flattens hierarchy slightly: rather than just “shift and add,” it shows padded wires and constants.
